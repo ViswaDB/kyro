@@ -8,6 +8,8 @@ const INITIAL_STATE = {
       taskTime: '00:00:03',
       title: 'Running',
       tags: ['exercise'],
+      startLocation: {lat: '0.9030048', long: '78.1045899'},
+      stopLocation: {lat: '9.9030048', long: '78.1045899'},
     },
     {
       id: 1,
@@ -15,6 +17,8 @@ const INITIAL_STATE = {
       taskTime: '00:00:10',
       title: 'Jogging',
       tags: ['Health', 'exercise'],
+      startLocation: {lat: '9.9030048', long: '78.1045899'},
+      stopLocation: {lat: '9.9030048', long: '78.1045899'},
     },
     {
       id: 2,
@@ -22,6 +26,8 @@ const INITIAL_STATE = {
       taskTime: '00:00:03',
       title: 'Gaming',
       tags: ['play', 'entertainment'],
+      startLocation: {lat: '9.9030048', long: '78.1045899'},
+      stopLocation: {lat: '9.9030048', long: '78.1045899'},
     },
     {
       id: 3,
@@ -29,6 +35,8 @@ const INITIAL_STATE = {
       taskTime: '00:00:03',
       title: 'Running',
       tags: ['exercise'],
+      startLocation: {lat: '9.9030048', long: '78.1045899'},
+      stopLocation: {lat: '9.9030048', long: '78.1045899'},
     },
     {
       id: 4,
@@ -36,6 +44,8 @@ const INITIAL_STATE = {
       taskTime: '10:00:03',
       title: 'Running',
       tags: ['exercise', 'health'],
+      startLocation: {lat: '9.9030048', long: '78.1045899'},
+      stopLocation: {lat: '9.9030048', long: '78.1045899'},
     },
   ],
 };

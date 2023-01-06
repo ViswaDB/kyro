@@ -89,9 +89,8 @@ const EditTask = props => {
 
   // to check if the task is already present today
   const titleMatch = title => {
-    const data = allTasks[moment(taskDate).utc().format('YYYY-MM-DD')].find(
-      item => item.title === title,
-    );
+    let date = moment(taskDate).utc().format('YYYY-MM-DD');
+    const data = allTasks?.[date]?.find(item => item.title === title);
     return data ? data : false;
   };
 
@@ -226,27 +225,23 @@ const EditTask = props => {
             maximumDate={new Date()}
             mode={strings.date}
           />
-
           <InputComponent
             header={strings.iHaveWorkedOn}
             onChangeText={val => setTaskTitle(val)}
             value={taskTitle}
           />
-
           <InputComponent
             header={strings.taskDate}
             value={moment(taskDate).utc().format('YYYY-MM-DD')}
             pressable={true}
             onPress={() => setDatePickerOpen(true)}
           />
-
           <InputComponent
             header={strings.tags}
             onChangeText={val => setTagValue(val)}
             value={tagValue}
             placeholder={'Enter tasks here'}
           />
-
           <Ripple onPress={onAddTag} style={styles.addTagView}>
             <Text
               style={baseStyle.txtStylePoppinsMedium(
@@ -254,7 +249,6 @@ const EditTask = props => {
                 colors.primary,
               )}>{`# Add Tags`}</Text>
           </Ripple>
-
           <FlatList
             data={tagsData}
             horizontal
@@ -271,6 +265,58 @@ const EditTask = props => {
               );
             }}
           />
+
+          <View
+            style={[baseStyle.flexDirectionRow, baseStyle.justifyContentSB]}>
+            <View>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.04,
+                  colors.primary,
+                  strings.uppercase,
+                )}>
+                {strings.startLocation}
+              </Text>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.035,
+                  colors.primaryLight,
+                )}>
+                lat : {selectedTaskData?.startLocation.lat}
+              </Text>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.035,
+                  colors.primaryLight,
+                )}>
+                long : {selectedTaskData?.startLocation.long}
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.04,
+                  colors.primary,
+                  strings.uppercase,
+                )}>
+                {strings.stopLocation}
+              </Text>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.035,
+                  colors.primaryLight,
+                )}>
+                lat : {selectedTaskData?.stopLocation.lat}
+              </Text>
+              <Text
+                style={baseStyle.txtStylePoppinsSemiBold(
+                  0.035,
+                  colors.primaryLight,
+                )}>
+                long : {selectedTaskData?.stopLocation.long}
+              </Text>
+            </View>
+          </View>
         </View>
 
         <TimerModal

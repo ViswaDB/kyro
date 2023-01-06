@@ -24,6 +24,12 @@ import {getDay, getTodayDate} from '../../utils/helpers/changeTimeToUTC';
 import Header from '../../components/header';
 import {validateEmpty} from '../../utils/helpers/validation';
 import moment from 'moment';
+import {
+  GetLatittudeLongitude,
+  openSettingsPopup,
+  PermissionRequests,
+} from '../../utils/helpers/getLocation';
+import Geolocation from '@react-native-community/geolocation';
 
 const HomeScreen = () => {
   // vector icons
@@ -57,6 +63,8 @@ const HomeScreen = () => {
   const [tagsData, setTagsData] = useState([]);
 
   const [allTasks, setAllTasks] = useState([]);
+  const [startLocation, setStartLocation] = useState({});
+  const [stopLocation, setStopLocation] = useState({});
 
   useEffect(() => {
     const arr = taskData.map(item => {
@@ -124,8 +132,10 @@ const HomeScreen = () => {
         taskTitle={item.title}
         taskTime={item.taskTime}
         onPlayPress={() => {
-          onPlay(item);
+          start(item);
         }}
+        startLocation={item.startLocation}
+        stopLocation={item.stopLocation}
       />
     );
   };
@@ -181,7 +191,6 @@ const HomeScreen = () => {
 
     const matchedTask = titleMatch(item.title);
 
-    console.log('matchedTask', matchedTask);
     if (matchedTask) {
       setHours(Number(matchedTask?.taskTime?.slice(0, 2)));
       setMins(Number(matchedTask?.taskTime?.slice(3, 5)));
@@ -196,7 +205,7 @@ const HomeScreen = () => {
   };
 
   // on stop started task timer
-  const onExistingTaskStop = () => {
+  const onExistingTaskStop = (stopLocation) => {
     setPause(true);
     let updatedTime = `${hours < 10 ? '0' + hours : hours}:${
       mins < 10 ? '0' + mins : mins
@@ -213,6 +222,8 @@ const HomeScreen = () => {
             ...item,
             taskTime: updatedTime,
             taskDate: getTodayDate(),
+            startLocation: startLocation,
+            stopLocation: stopLocation,
           };
         } else {
           return {
@@ -227,6 +238,8 @@ const HomeScreen = () => {
         title: selectedTask.title,
         taskTime: updatedTime,
         taskDate: getTodayDate(),
+        startLocation: startLocation,
+        stopLocation: stopLocation,
       };
       dispatch(addTaskRequest(obj));
     }
@@ -254,6 +267,64 @@ const HomeScreen = () => {
   const onDeleteTag = item => {
     const array = tagsData.filter(val => val !== item);
     setTagsData(array);
+  };
+
+  const start = item => {
+    console.log('start fn');
+    GetLatittudeLongitude(
+      data => {
+        locationCallbacks('START', data, item);
+      },
+      () => {
+        // permission denied
+        Toast.show(
+          'Permission denied...Timer need location access!',
+          Toast.SHORT,
+        );
+      },
+    );
+  };
+
+  const locationCallbacks = (type, data, item) => {
+    if (type == 'START') {
+      onPlay(item);
+      setStartLocation(data);
+    } else {
+      setStopLocation(data)
+        onExistingTaskStop(data)
+      
+    }
+  };
+
+  const stopFn = () => {
+    GetLatittudeLongitude(
+      data => {
+        locationCallbacks('STOP', data, []);
+      },
+      () => {
+        // permission dined
+        Modal.alert('Permission Dined! Timer need location access!');
+      },
+    );
+  };
+
+  // get permission
+  const getPermission = type => {
+    PermissionRequests(
+      'locations',
+      () => {
+        //permission granted
+        type == strings.start ? start() : stopFn();
+      },
+      () => {
+        //permissoin dined
+        // Modal.alert('Permission Dined! Timer need location access!');
+        openSettingsPopup(
+          'Location Permission Required',
+          'Timer needs your location access!',
+        );
+      },
+    );
   };
 
   return (
@@ -296,7 +367,7 @@ const HomeScreen = () => {
                 renderHiddenItem={(data, rowMap) => (
                   <View style={styles.hiddeItemContainer}>
                     <TouchableOpacity
-                      onPress={() => onPlay(data?.item)}
+                      onPress={() => getPermission(strings.start)}
                       style={styles.hiddenView}>
                       {continueIcon}
                       <Text
@@ -357,7 +428,7 @@ const HomeScreen = () => {
           taskTitle={selectedTask?.title}
           taskTime={selectedTaskTime}
           sheet={strings.oldTask}
-          onStopPress={onExistingTaskStop}
+          onStopPress={() => stopFn(strings.stop)}
           updatingTime={`${hours < 10 ? '0' + hours : hours}:${
             mins < 10 ? '0' + mins : mins
           }:${secs < 10 ? '0' + secs : secs}`}

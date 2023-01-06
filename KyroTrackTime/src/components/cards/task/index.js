@@ -1,20 +1,26 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {baseStyle, colors} from '../../../constant/theme';
 import styles from './styles';
 import Ripple from 'react-native-material-ripple';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const TaskCard = ({taskTitle, taskTime,onPlayPress,onCardPress}) => {
+const TaskCard = ({
+  taskTitle,
+  taskTime,
+  onPlayPress,
+  onCardPress,
+  startLocation,
+  stopLocation,
+}) => {
   const playIcon = <Icon name="play" size={15} color={colors.black} />;
 
   return (
     <View style={[baseStyle.width100Percentage, baseStyle.alignSelfCenter]}>
-      <TouchableOpacity activeOpacity={0.9} onPress={onCardPress} style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={onCardPress}
+        style={styles.container}>
         <Text
           style={[
             baseStyle.txtStylePoppinsRegular(0.035, colors.primary),
