@@ -100,7 +100,7 @@ const EditTask = props => {
     if (validateEmpty(taskTitle)) {
       if (!matchedTask) {
         let alteredData = taskData.map(item => {
-          if (item.id === selectedTaskData.id) {
+          if (item.id === selectedTaskData?.id) {
             return {
               ...item,
               taskTime: taskDuration,
@@ -117,9 +117,9 @@ const EditTask = props => {
         Toast.show('Task updated successfully!', Toast.SHORT);
         NavigationService.goBack();
       } else {
-        if (selectedTaskData.taskTime != taskDuration) {
+        if (selectedTaskData?.taskTime != taskDuration) {
           let alteredData = taskData.map(item => {
-            if (item.id === selectedTaskData.id) {
+            if (item.id === selectedTaskData?.id) {
               return {
                 ...item,
                 taskTime: taskDuration,

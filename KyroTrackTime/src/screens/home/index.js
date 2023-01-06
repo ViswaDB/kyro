@@ -129,11 +129,9 @@ const HomeScreen = () => {
         onCardPress={() =>
           NavigationService.navigate(SCREENS.EDITTASK, {taskData: item})
         }
-        taskTitle={item.title}
-        taskTime={item.taskTime}
-        onPlayPress={() => {
-          start(item);
-        }}
+        taskTitle={item?.title}
+        taskTime={item?.taskTime}
+        onPlayPress={() => startFn(item)}
         startLocation={item.startLocation}
         stopLocation={item.stopLocation}
       />
@@ -175,9 +173,8 @@ const HomeScreen = () => {
 
   // to check if the task is already present today
   const titleMatch = title => {
-    console.log('getTodayDate', getTodayDate);
     if (allTasks && allTasks[getTodayDate()]) {
-      const data = allTasks[getTodayDate()].find(item => item.title === title);
+      const data = allTasks[getTodayDate()].find(item => item?.title === title);
       return data ? data : false;
     } else {
       return false;
@@ -187,9 +184,9 @@ const HomeScreen = () => {
   // on start task timer
   const onPlay = item => {
     setSelectedTask(item);
-    setSelectedTaskTime(item.taskTime);
+    setSelectedTaskTime(item?.taskTime);
 
-    const matchedTask = titleMatch(item.title);
+    const matchedTask = titleMatch(item?.title);
 
     if (matchedTask) {
       setHours(Number(matchedTask?.taskTime?.slice(0, 2)));
@@ -205,7 +202,7 @@ const HomeScreen = () => {
   };
 
   // on stop started task timer
-  const onExistingTaskStop = stopLocation => {
+  const onExistingTaskStop = (stopLocation, selectedTask) => {
     setPause(true);
     let updatedTime = `${hours < 10 ? '0' + hours : hours}:${
       mins < 10 ? '0' + mins : mins
@@ -213,10 +210,10 @@ const HomeScreen = () => {
 
     ExistTaskSheetRef.current.close();
 
-    const matchedTask = titleMatch(selectedTask.title);
+    const matchedTask = titleMatch(selectedTask?.title);
     // updating existing task time
     if (matchedTask) {
-      let alteredData = taskData.map(item => {
+      let alteredData = taskData?.map(item => {
         if (item.id === matchedTask.id) {
           return {
             ...item,
@@ -235,7 +232,7 @@ const HomeScreen = () => {
     } else {
       let obj = {
         id: taskData?.length,
-        title: selectedTask.title,
+        title: selectedTask?.title,
         taskTime: updatedTime,
         taskDate: getTodayDate(),
         startLocation: startLocation,
@@ -269,7 +266,7 @@ const HomeScreen = () => {
     setTagsData(array);
   };
 
-  const start = item => {
+  const startFn = item => {
     GetLatittudeLongitude(
       data => {
         locationCallbacks('START', data, item);
@@ -290,7 +287,7 @@ const HomeScreen = () => {
       setStartLocation(data);
     } else {
       setStopLocation(data);
-      onExistingTaskStop(data);
+      onExistingTaskStop(data, selectedTask);
     }
   };
 
@@ -310,12 +307,13 @@ const HomeScreen = () => {
   };
 
   // get permission
-  const getPermission = type => {
+  const getPermission = (type, selectedTask) => {
+    console.log('selectedTask===>', selectedTask);
     PermissionRequests(
       'locations',
       () => {
         //permission granted
-        type == strings.start ? start() : stopFn();
+        type == strings.start ? startFn(selectedTask) : stopFn();
       },
       () => {
         //permissoin dined
@@ -365,10 +363,10 @@ const HomeScreen = () => {
                 ListEmptyComponent={() => {
                   return <EmptyComponent />;
                 }}
-                renderHiddenItem={(data, rowMap) => (
+                renderHiddenItem={data => (
                   <View style={styles.hiddeItemContainer}>
                     <TouchableOpacity
-                      onPress={() => getPermission(strings.start)}
+                      onPress={() => getPermission(strings.start, data?.item)}
                       style={styles.hiddenView}>
                       {continueIcon}
                       <Text
