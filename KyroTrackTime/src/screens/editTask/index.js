@@ -282,14 +282,14 @@ const EditTask = props => {
                   0.035,
                   colors.primaryLight,
                 )}>
-                lat : {selectedTaskData?.startLocation.lat}
+                {strings.lat} : {selectedTaskData?.startLocation.lat}
               </Text>
               <Text
                 style={baseStyle.txtStylePoppinsSemiBold(
                   0.035,
                   colors.primaryLight,
                 )}>
-                long : {selectedTaskData?.startLocation.long}
+                {strings.long} : {selectedTaskData?.startLocation.long}
               </Text>
             </View>
             <View>
@@ -306,14 +306,14 @@ const EditTask = props => {
                   0.035,
                   colors.primaryLight,
                 )}>
-                lat : {selectedTaskData?.stopLocation.lat}
+                {strings.lat} : {selectedTaskData?.stopLocation.lat}
               </Text>
               <Text
                 style={baseStyle.txtStylePoppinsSemiBold(
                   0.035,
                   colors.primaryLight,
                 )}>
-                long : {selectedTaskData?.stopLocation.long}
+                {strings.long} : {selectedTaskData?.stopLocation.long}
               </Text>
             </View>
           </View>

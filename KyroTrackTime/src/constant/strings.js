@@ -48,7 +48,9 @@ const strings = {
   tags: 'Tags',
   start: 'start',
   startLocation:'Start location',
-  stopLocation:'Stop location'
+  stopLocation:'Stop location',
+  lat:'lat',
+  long:'long'
 };
 
 export default strings;

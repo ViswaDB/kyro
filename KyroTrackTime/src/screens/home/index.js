@@ -205,7 +205,7 @@ const HomeScreen = () => {
   };
 
   // on stop started task timer
-  const onExistingTaskStop = (stopLocation) => {
+  const onExistingTaskStop = stopLocation => {
     setPause(true);
     let updatedTime = `${hours < 10 ? '0' + hours : hours}:${
       mins < 10 ? '0' + mins : mins
@@ -270,7 +270,6 @@ const HomeScreen = () => {
   };
 
   const start = item => {
-    console.log('start fn');
     GetLatittudeLongitude(
       data => {
         locationCallbacks('START', data, item);
@@ -290,9 +289,8 @@ const HomeScreen = () => {
       onPlay(item);
       setStartLocation(data);
     } else {
-      setStopLocation(data)
-        onExistingTaskStop(data)
-      
+      setStopLocation(data);
+      onExistingTaskStop(data);
     }
   };
 
@@ -303,7 +301,10 @@ const HomeScreen = () => {
       },
       () => {
         // permission dined
-        Modal.alert('Permission Dined! Timer need location access!');
+        Toast.show(
+          'Permission denied...Timer need location access!',
+          Toast.SHORT,
+        );
       },
     );
   };
