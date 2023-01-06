@@ -95,6 +95,8 @@ const AddCompletedTask = () => {
         taskDate: moment(taskDate).utc().format('YYYY-MM-DD'),
         title: taskTitle,
         tags: [],
+        startLocation: {},
+        stopLocation: {},
       };
 
       if (sameObj) {

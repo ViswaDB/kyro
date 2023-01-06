@@ -147,7 +147,7 @@ const EditTask = props => {
 
   // on delete task
   const onDeleteTask = () => {
-    let filteredData = taskData.filter(item => item.id !== selectedTaskData.id);
+    let filteredData = taskData.filter(item => item.id !== selectedTaskData?.id);
     dispatch(updateTaskRequest(filteredData));
     NavigationService.goBack();
   };
@@ -256,7 +256,7 @@ const EditTask = props => {
               return (
                 <Ripple
                   onPress={() => onTagPress(item)}
-                  style={baseStyle.paddingVertical10px}>
+                  style={baseStyle.paddingTop10px}>
                   <View style={baseStyle.alignSelfCenter}>
                     <Text style={styles.tagText}>{item}</Text>
                   </View>
@@ -267,7 +267,11 @@ const EditTask = props => {
           />
 
           <View
-            style={[baseStyle.flexDirectionRow, baseStyle.justifyContentSB]}>
+            style={[
+              baseStyle.flexDirectionRow,
+              baseStyle.justifyContentSB,
+              baseStyle.marginTop5px,
+            ]}>
             <View>
               <Text
                 style={baseStyle.txtStylePoppinsSemiBold(
@@ -282,14 +286,14 @@ const EditTask = props => {
                   0.035,
                   colors.primaryLight,
                 )}>
-                {strings.lat} : {selectedTaskData?.startLocation.lat}
+                {strings.lat} : {selectedTaskData?.startLocation?.lat}
               </Text>
               <Text
                 style={baseStyle.txtStylePoppinsSemiBold(
                   0.035,
                   colors.primaryLight,
                 )}>
-                {strings.long} : {selectedTaskData?.startLocation.long}
+                {strings.long} : {selectedTaskData?.startLocation?.long}
               </Text>
             </View>
             <View>
@@ -306,14 +310,14 @@ const EditTask = props => {
                   0.035,
                   colors.primaryLight,
                 )}>
-                {strings.lat} : {selectedTaskData?.stopLocation.lat}
+                {strings.lat} : {selectedTaskData?.stopLocation?.lat}
               </Text>
               <Text
                 style={baseStyle.txtStylePoppinsSemiBold(
                   0.035,
                   colors.primaryLight,
                 )}>
-                {strings.long} : {selectedTaskData?.stopLocation.long}
+                {strings.long} : {selectedTaskData?.stopLocation?.long}
               </Text>
             </View>
           </View>
