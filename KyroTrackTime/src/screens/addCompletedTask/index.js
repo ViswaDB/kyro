@@ -78,9 +78,8 @@ const AddCompletedTask = () => {
 
   // to check if the task is already present today
   const titleMatch = title => {
-    const data = allTasks[moment(taskDate).utc().format('YYYY-MM-DD')].find(
-      item => item.title === title,
-    );
+    let date = moment(taskDate).utc().format('YYYY-MM-DD');
+    const data = allTasks?.[date]?.find(item => item.title === title);
     return data ? data : false;
   };
 
@@ -114,7 +113,7 @@ const AddCompletedTask = () => {
   };
 
   const onTagPress = item => {
-    const array = tagsData.filter(val => val !== item);
+    const array = tagsData?.filter(val => val !== item);
     setTagsData(array);
   };
 
